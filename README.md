@@ -43,14 +43,23 @@ LightGBM
 Hyperparameter-tuned boosting models (Optuna)
 
 📈 Performance Results
+
 Model	MAE	RMSE
+
 XGBoost (baseline)	2236.70	3192.72
+
 Gradient Boosting	2237.22	3192.55
+
 LightGBM	2262.43	3229.74
+
 XGBoost (Optuna-tuned)	—	3229.26
+
 Random Forest	2353.55	3436.14
+
 Extra Trees	2369.90	3405.14
+
 🔍 Key Findings
+
 ✅ Boosting models outperformed bagging models
 
 XGBoost, Gradient Boosting, and LightGBM consistently achieved lower error rates.
@@ -145,25 +154,7 @@ Frontend runs on:
 
 http://localhost:8501
 
-📦 Project Structure
 
-Power-Consumption-Regressor/
-
-│
-
-├── data/
-
-├── models/
-
-├── notebooks/
-
-├── main.py          # FastAPI backend
-
-├── app.py           # Streamlit frontend
-
-├── requirements.txt
-
-└── README.md
 
 🔬 Future Improvements
 
