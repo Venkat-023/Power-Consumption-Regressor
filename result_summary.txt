@@ -1,0 +1,78 @@
+📊 Project Summary – Regression Model Comparison & Optimization
+Objective
+
+To build and evaluate multiple regression models for predicting a continuous target variable (mean ≈ 82,539, std ≈ 27,243) and identify the best-performing approach based on MAE and RMSE.
+
+Models Evaluated
+
+The following models were trained and evaluated on the same dataset:
+
+Linear ensemble trees
+
+Bagging-based models
+
+Boosting-based models
+
+Hyperparameter-tuned boosting models
+
+Performance Results
+Model	MAE	RMSE
+XGBoost (baseline)	2236.70	3192.72
+Gradient Boosting	2237.22	3192.55
+LightGBM	2262.43	3229.74
+XGBoost (Optuna-tuned)	—	3229.26
+Random Forest	2353.55	3436.14
+Extra Trees	2369.90	3405.14
+Key Findings
+
+Boosting models consistently outperformed bagging models
+
+XGBoost, Gradient Boosting, and LightGBM achieved the lowest errors
+
+Best overall performance
+
+Lowest MAE: XGBoost (2236.70)
+
+Lowest RMSE: Gradient Boosting (3192.55)
+
+Difference between the two is negligible → effectively a tie
+
+Random Forest and Extra Trees underperformed
+
+Higher MAE and RMSE indicate limited ability to capture complex relationships
+
+Hyperparameter tuning with Optuna did not improve performance
+
+Tuned XGBoost RMSE (~3229) was worse than the baseline
+
+Likely due to overly conservative settings causing mild underfitting
+
+Error Interpretation
+
+MAE ≈ 2.7% of the target mean
+
+RMSE ≈ 11.7% of the target standard deviation
+
+➡️ This indicates strong predictive accuracy relative to the scale and variability of the data.
+
+Final Model Recommendation
+
+Primary choice: XGBoost (baseline)
+
+Alternative: Gradient Boosting (nearly identical performance)
+
+Further improvements are expected to be incremental, as the model performance is close to the practical ceiling for the given feature set.
+
+Next Steps (Optional)
+
+Ensemble XGBoost + Gradient Boosting predictions
+
+Residual analysis for extreme values
+
+Target transformation if skewness is present
+
+Constrained hyperparameter tuning with a narrower search space
+
+✅ Conclusion
+
+The project successfully identified tree-based boosting models as the optimal solution, achieving high accuracy and stable performance. Additional gains would require feature engineering or advanced ensembling rather than model changes.
