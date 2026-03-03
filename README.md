@@ -116,34 +116,55 @@ Trained XGBoost Model
 Prediction Output
         ↓
 Displayed on Streamlit Interface
+
 🚀 How to Run Locally
+
 1️⃣ Clone the Repository
+
 git clone https://github.com/Venkat-023/Power-Consumption-Regressor.git
+
 cd Power-Consumption-Regressor
+
 2️⃣ Install Dependencies
+
 pip install -r requirements.txt
+
 3️⃣ Run FastAPI Backend
+
 uvicorn main:app --reload
 
 Backend runs on:
 
 http://127.0.0.1:8000
+
 4️⃣ Run Streamlit Frontend
+
 streamlit run app.py
 
 Frontend runs on:
 
 http://localhost:8501
+
 📦 Project Structure
+
 Power-Consumption-Regressor/
+
 │
+
 ├── data/
+
 ├── models/
+
 ├── notebooks/
+
 ├── main.py          # FastAPI backend
+
 ├── app.py           # Streamlit frontend
+
 ├── requirements.txt
+
 └── README.md
+
 🔬 Future Improvements
 
 Ensemble XGBoost + Gradient Boosting
