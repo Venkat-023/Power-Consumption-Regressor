@@ -32,7 +32,7 @@ def load_model():
     global model, preprocessor
 
     model = XGBRegressor()
-    model.load_model(MODEL_DIR / "model.json")
+    model.load_model(MODEL_DIR / "model2.json")
 
     preprocessor = joblib.load(MODEL_DIR / "scaler.pkl")
 
