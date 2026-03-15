@@ -1,31 +1,54 @@
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
 from fastapi import FastAPI
 from pydantic import BaseModel
 from pathlib import Path
+from typing import Literal
 import joblib
 import pandas as pd
+from xgboost import XGBRegressor
 
 # -------------------------
-# Load model & preprocessor
+# Paths
 # -------------------------
 BASE_DIR = Path(__file__).resolve().parent
 MODEL_DIR = BASE_DIR / "model"
 
-model = joblib.load(MODEL_DIR / "xgb_model.pkl")
-preprocessor = joblib.load(MODEL_DIR / "scaler.pkl")
-
+# -------------------------
+# FastAPI app
+# -------------------------
 app = FastAPI(title="Power Consumption Prediction API")
 
+model = None
+preprocessor = None
+
+
 # -------------------------
-# Input schema (RAW values)
+# Load model on startup
+# -------------------------
+@app.on_event("startup")
+def load_model():
+    global model, preprocessor
+
+    model = XGBRegressor()
+    model.load_model(MODEL_DIR / "model.json")
+
+    preprocessor = joblib.load(MODEL_DIR / "scaler.pkl")
+
+
+# -------------------------
+# Input schema
 # -------------------------
 class ModelInput(BaseModel):
     hour: int
     weekday: int
     month: int
-    season: str              # "dry", "rainy", "harmattan"
+    season: Literal["dry", "rainy", "harmattan"]
     temperature: float
-    is_rain_day: int          # 0 or 1
-    holiday_type_national: int  # 0 or 1
+    is_rain_day: int
+    holiday_type_national: int
+
 
 # -------------------------
 # Health check
@@ -34,10 +57,10 @@ class ModelInput(BaseModel):
 def health_check():
     return {"status": "API is running"}
 
+
 # -------------------------
 # Prediction endpoint
 # -------------------------
-@app.post("/predict")
 @app.post("/predict")
 def predict(data: ModelInput):
 
@@ -57,7 +80,6 @@ def predict(data: ModelInput):
         "holiday_type_national": data.holiday_type_national
     }])
 
-    # Force exact training order
     df = df[[
         "hour",
         "weekday",
@@ -71,6 +93,7 @@ def predict(data: ModelInput):
     ]]
 
     X_processed = preprocessor.transform(df)
+
     prediction = model.predict(X_processed)[0]
 
     return {

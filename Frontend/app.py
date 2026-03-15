@@ -3,7 +3,7 @@ import requests
 import plotly.graph_objects as go
 from datetime import datetime
 
-API_URL = "http://127.0.0.1:8000/predict"
+API_URL =  "http://backend:8000/predict"
 
 # -------------------------------------------------
 # Page Configuration
@@ -155,6 +155,9 @@ with right:
 # -------------------------------------------------
 # Prediction Section
 # -------------------------------------------------
+# -------------------------------------------------
+# Prediction Section
+# -------------------------------------------------
 if predict_btn:
 
     payload = {
@@ -169,33 +172,40 @@ if predict_btn:
 
     try:
         with st.spinner("🔎 Analyzing renewable energy demand patterns..."):
-            response = requests.post(API_URL, json=payload)
+            response = requests.post(API_URL, json=payload, timeout=10)
 
-        if response.status_code == 200:
-            prediction = response.json()["predicted_load_kw"]
+        if response.status_code != 200:
+            st.error(f"Backend returned error {response.status_code}")
+            st.write(response.text)
+            st.stop()
 
-            st.divider()
-            st.subheader("📊 Forecast Results")
+        prediction = response.json()["predicted_load_kw"]
 
-            m1, m2, m3 = st.columns(3)
-            m1.metric("Predicted Load (kW)", f"{prediction:,.2f}")
-            m2.metric("Temperature (°C)", temperature)
-            m3.metric("Operational Hour", hour)
+        st.divider()
+        st.subheader("📊 Forecast Results")
 
-            fig = go.Figure(go.Indicator(
-                mode="gauge+number",
-                value=prediction,
-                title={'text': "Forecasted Electricity Load (kW)"},
-                gauge={
-                    'axis': {'range': [0, max(100, prediction * 1.2)]},
-                    'bar': {'color': "#22c55e"},
-                }
-            ))
+        m1, m2, m3 = st.columns(3)
+        m1.metric("Predicted Load (kW)", f"{prediction:,.2f}")
+        m2.metric("Temperature (°C)", temperature)
+        m3.metric("Operational Hour", hour)
 
-            st.plotly_chart(fig, width="stretch")
+        fig = go.Figure(go.Indicator(
+            mode="gauge+number",
+            value=prediction,
+            title={'text': "Forecasted Electricity Load (kW)"},
+            gauge={
+                'axis': {'range': [0, max(100, prediction * 1.2)]},
+                'bar': {'color': "#22c55e"},
+            }
+        ))
 
-        else:
-            st.error("Prediction failed. Check backend API.")
+        st.plotly_chart(fig, width="stretch")
 
     except requests.exceptions.ConnectionError:
-        st.error("🚫 Backend API is not running.")
+        st.error("🚫 Backend API is not reachable from Streamlit container.")
+
+    except requests.exceptions.Timeout:
+        st.error("⏱ Backend request timed out.")
+
+    except Exception as e:
+        st.error(f"⚠️ Request failed: {e}")
