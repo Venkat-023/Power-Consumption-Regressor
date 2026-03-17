@@ -3,7 +3,7 @@ import requests
 import plotly.graph_objects as go
 from datetime import datetime
 
-API_URL =  "http://localhost:8000/predict"
+API_URL =  "http://Backend:8000/predict"
 
 # -------------------------------------------------
 # Page Configuration
