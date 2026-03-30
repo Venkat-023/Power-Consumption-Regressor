@@ -20,51 +20,83 @@ Cloud deployment on AWS EC2
 
 The final solution delivers high predictive accuracy and is deployed as a production-ready ML application.
 
-🎯 
 
 Compare multiple regression algorithms
 
 Evaluate using MAE and RMSE
+
 Optimize models with hyperparameter tuning
-Deploy best-performing model
+
+Deploy best-performing 
+
 Build full-stack ML system (API + UI)
+
 Containerize using Docker
+
 Deploy on AWS EC2
+
 🧠 Models Evaluated
 
 The following models were trained on the same dataset:
 
 🔹 Bagging-Based Models
+
 Random Forest
+
 Extra Trees
+
 🔹 Boosting-Based Models
+
 XGBoost (baseline)
+
 Gradient Boosting
+
 LightGBM
+
 XGBoost (Optuna-tuned)
+
 📈 Performance Results
+
 Model	MAE	RMSE
+
 XGBoost (baseline)	2236.70	3192.72
+
 Gradient Boosting	2237.22	3192.55
+
 LightGBM	2262.43	3229.74
+
 XGBoost (Optuna-tuned)	—	3229.26
+
 Random Forest	2353.55	3436.14
+
 Extra Trees	2369.90	3405.14
+
 🔍 Key Findings
+
 ✅ Boosting > Bagging
 
 Boosting models consistently outperform bagging models.
 
 🏆 Best Models
+
 Lowest MAE → XGBoost
+
 Lowest RMSE → Gradient Boosting
+
 ➡️ Difference is negligible → effectively a tie
+
 ⚠️ Hyperparameter Tuning
+
 Optuna-tuned XGBoost underperformed baseline
+
 Likely due to conservative search space → slight underfitting
+
 📊 Error Interpretation
+
 MAE ≈ 2.7% of mean target
+
 RMSE ≈ 11.7% of standard deviation
+
 
 ➡️ Indicates strong predictive performance relative to dataset scale
 
@@ -73,14 +105,17 @@ RMSE ≈ 11.7% of standard deviation
 Python
 Scikit-learn
 XGBoost
+
 LightGBM
 Optuna
 Pandas, NumPy
 🔹 Backend
+
 FastAPI
 REST API for inference
 🔹 Frontend
 Streamlit
+
 Interactive UI for predictions
 🔹 DevOps & Deployment
 Docker
