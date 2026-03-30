@@ -57,7 +57,7 @@ XGBoost (Optuna-tuned)
 
 📈 Performance Results
 
-Model	        MAE	        RMSE
+Model	                MAE	                RMSE
 
 XGBoost (baseline)	2236.70	        3192.72
 
