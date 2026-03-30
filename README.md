@@ -7,16 +7,23 @@ This project focuses on building and evaluating multiple machine learning regres
 The workflow covers:
 
 Model comparison
+
 Performance evaluation (MAE, RMSE)
+
 Hyperparameter optimization
+
 Full-stack deployment
+
 Containerization using Docker
+
 Cloud deployment on AWS EC2
 
 The final solution delivers high predictive accuracy and is deployed as a production-ready ML application.
 
-🎯 Objective
+🎯 
+
 Compare multiple regression algorithms
+
 Evaluate using MAE and RMSE
 Optimize models with hyperparameter tuning
 Deploy best-performing model
