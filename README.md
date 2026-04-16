@@ -1,249 +1,126 @@
-⚡ Power Consumption Regressor
-Regression Model Comparison, Optimization & Full-Stack Deployment
-📌 Overview
+# Power Consumption Regressor
 
-This project focuses on building and evaluating multiple machine learning regression models to predict power consumption (continuous target variable with mean ≈ 82,539 and std ≈ 27,243).
+Regression model comparison, optimization, and full-stack deployment for electricity load forecasting.
 
-The workflow covers:
+## Live Demo
 
-Model comparison
+- Hugging Face Space: [Venkat-023/Power-Consumption-Regressor](https://huggingface.co/spaces/Venkat-023/Power-Consumption-Regressor)
 
-Performance evaluation (MAE, RMSE)
+## Overview
 
-Hyperparameter optimization
+This project predicts power consumption using a supervised regression pipeline and serves predictions through a FastAPI backend with a Streamlit frontend. The repo includes the trained XGBoost model, preprocessing pipeline, Docker assets, and deployment-ready configuration for Hugging Face Spaces.
 
-Full-stack deployment
+## Features
 
-Containerization using Docker
+- Compares multiple regression approaches for power consumption forecasting
+- Serves predictions through a FastAPI inference API
+- Provides an interactive Streamlit UI for manual predictions
+- Includes Docker setup for both local multi-container runs and Hugging Face Spaces
 
-Cloud deployment on AWS EC2
+## Models Evaluated
 
-The final solution delivers high predictive accuracy and is deployed as a production-ready ML application.
+- Random Forest
+- Extra Trees
+- XGBoost
+- Gradient Boosting
+- LightGBM
+- Optuna-tuned XGBoost
 
+## Reported Results
 
-Compare multiple regression algorithms
+| Model | MAE | RMSE |
+| --- | ---: | ---: |
+| XGBoost (baseline) | 2236.70 | 3192.72 |
+| Gradient Boosting | 2237.22 | 3192.55 |
+| LightGBM | 2262.43 | 3229.74 |
+| XGBoost (Optuna-tuned) | - | 3229.26 |
+| Random Forest | 2353.55 | 3436.14 |
+| Extra Trees | 2369.90 | 3405.14 |
 
-Evaluate using MAE and RMSE
+## Project Structure
 
-Optimize models with hyperparameter tuning
+```text
+.
+|-- Backend/
+|   |-- app.py
+|   |-- Dockerfile
+|   `-- model/
+|-- Frontend/
+|   |-- app.py
+|   `-- Dockerfile
+|-- Dockerfile
+|-- docker-compose.yml
+`-- start.sh
+```
 
-Deploy best-performing 
+## Local Development
 
-Build full-stack ML system (API + UI)
+### Run with Docker Compose
 
-Containerize using Docker
+```bash
+docker compose up --build
+```
 
-Deploy on AWS EC2
+Services:
 
-🧠 Models Evaluated
+- Frontend: `http://localhost:8501`
+- Backend: `http://localhost:8000`
 
-The following models were trained on the same dataset:
+### Run as a Single Container
 
-🔹 Bagging-Based Models
+This matches the Hugging Face Space deployment model.
 
-Random Forest
+```bash
+docker build -t power-consumption-regressor .
+docker run -p 7860:7860 power-consumption-regressor
+```
 
-Extra Trees
+App URL:
 
-🔹 Boosting-Based Models
+- Streamlit UI: `http://localhost:7860`
 
-XGBoost (baseline)
+### Run Without Docker
 
-Gradient Boosting
+Backend:
 
-LightGBM
-
-XGBoost (Optuna-tuned)
-
-📈 Performance Results
-
-Model	                MAE	                RMSE
-
-XGBoost (baseline)	2236.70	        3192.72
-
-Gradient Boosting	2237.22	        3192.55
-
-LightGBM	        2262.43	        3229.74
-
-XGBoost (Optuna-tuned)	 —	        3229.26
-
-Random Forest	        2353.55	        3436.14
-
-Extra Trees	        2369.90	        3405.14
-
-🔍 Key Findings
-
-✅ Boosting > Bagging
-
-Boosting models consistently outperform bagging models.
-
-🏆 Best Models
-
-Lowest MAE → XGBoost
-
-Lowest RMSE → Gradient Boosting
-
-➡️ Difference is negligible → effectively a tie
-
-⚠️ Hyperparameter Tuning
-
-Optuna-tuned XGBoost underperformed baseline
-
-Likely due to conservative search space → slight underfitting
-
-📊 Error Interpretation
-
-MAE ≈ 2.7% of mean target
-
-RMSE ≈ 11.7% of standard deviation
-
-
-➡️ Indicates strong predictive performance relative to dataset scale
-
-🏗️ Tech Stack
-
-🔹 Machine Learning
-
-Python
-
-Scikit-learn
-
-XGBoost
-
-LightGBM
-
-Optuna
-
-Pandas, NumPy
-
-🔹 Backend
-
-FastAPI
-REST API for inference
-🔹 Frontend
-Streamlit
-
-Interactive UI for predictions
-
-🔹 DevOps & Deployment
-
-Docker
-
-AWS EC2
-
-Uvicorn
-
-🖥️ System Architecture
-
-User Input (Streamlit UI)
-        ↓
-FastAPI Backend (REST API)
-        ↓
-Trained XGBoost Model
-        ↓
-Prediction Output
-        ↓
-Displayed on Streamlit Interface
-
-🐳 Docker Setup
-
-1️⃣ Build Docker Image
-
-docker build -t power-regressor .
-
-2️⃣ Run Container
-
-docker run -p 8000:8000 -p 8501:8501 power-regressor
-
-☁️ AWS EC2 Deployment
-
-Steps Followed:
-
-Launched EC2 instance (Ubuntu)
-
-Installed Docker:
-
-sudo apt update
-
-sudo apt install docker.io -y
-
-Pulled project & built image:
-
-git clone https://github.com/Venkat-023/Power-Consumption-Regressor.git
-
-cd Power-Consumption-Regressor
-
-docker build -t power-regressor .
-
-Ran container:
-
-docker run -d -p 8000:8000 -p 8501:8501 power-regressor
-
-Accessed application via:
-
-Backend API: http://<EC2-IP>:8000
-
-Frontend UI: http://<EC2-IP>:8501
-
-🚀 Run Locally (Without Docker)
-
-1️⃣ Clone Repository
-
-git clone https://github.com/Venkat-023/Power-Consumption-Regressor.git
-
-cd Power-Consumption-Regressor
-
-2️⃣ Install Dependencies
-
+```bash
+cd Backend
 pip install -r requirements.txt
+uvicorn app:app --reload
+```
 
-3️⃣ Run Backend
+Frontend:
 
-uvicorn main:app --reload
-
-4️⃣ Run Frontend
+```bash
+cd Frontend
+pip install -r requirements.txt
 streamlit run app.py
+```
 
-🔬 Future Improvements
+## Hugging Face Spaces Deployment
 
-Ensemble: XGBoost + Gradient Boosting
+This repository now includes a root `Dockerfile` that is compatible with Hugging Face Docker Spaces.
 
-Residual error analysis (especially outliers)
+- Space URL: [https://huggingface.co/spaces/Venkat-023/Power-Consumption-Regressor](https://huggingface.co/spaces/Venkat-023/Power-Consumption-Regressor)
+- Exposed app port: `7860`
+- Startup flow: FastAPI runs internally on `8000`, Streamlit is exposed publicly on `7860`
 
-Target transformation (for skewness)
+To deploy updates to the Space, push this repository contents to the Space repository or connect the Space to this GitHub repository if you want automatic rebuilds.
 
-Better hyperparameter search space
+## Tech Stack
 
-Advanced feature engineering
+- Python
+- FastAPI
+- Streamlit
+- XGBoost
+- scikit-learn
+- pandas
+- Docker
+- Hugging Face Spaces
 
-📌 Final Recommendation
+## Recommendation
 
-Primary Model: XGBoost (baseline)
+- Primary model: XGBoost baseline
+- Strong alternative: Gradient Boosting
 
-Alternative: Gradient Boosting
-
-➡️ Future gains are more likely from:
-
-Feature engineering
-
-Model ensembling
-
-rather than switching algorithms
-
-✅ Conclusion
-
-This project demonstrates:
-
-End-to-end ML workflow
-
-Model comparison & evaluation
-
-Practical optimization
-
-Full-stack deployment
-
-Docker containerization
-
-Cloud deployment on AWS
-
-➡️ A complete pipeline from experimentation → production-ready system
+Most future gains are likely to come from feature engineering, model ensembling, and deeper error analysis rather than switching algorithms alone.
