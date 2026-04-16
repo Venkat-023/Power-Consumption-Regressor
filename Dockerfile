@@ -15,10 +15,7 @@ RUN pip install --upgrade pip && \
 
 COPY Backend /app/Backend
 COPY Frontend /app/Frontend
-COPY start.sh /app/start.sh
-
-RUN chmod +x /app/start.sh
 
 EXPOSE 7860
 
-CMD ["/app/start.sh"]
+CMD ["sh", "-c", "uvicorn Backend.app:app --host 0.0.0.0 --port 8000 & exec streamlit run Frontend/app.py --server.address=0.0.0.0 --server.port=${PORT:-7860}"]

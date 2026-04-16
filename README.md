@@ -50,7 +50,6 @@ This project predicts power consumption using a supervised regression pipeline a
 |   `-- Dockerfile
 |-- Dockerfile
 |-- docker-compose.yml
-`-- start.sh
 ```
 
 ## Local Development
